@@ -6,3 +6,5 @@
 ### [Authentication and encryption](./docs/04_Authentication_encryption.md)
 ### [Metrics](./docs/05_metrics.md)
 ### [Promtools](./docs/06_Promtools.md)
+### [Docker monitoring](./docs/07_Docker_monitoring.md)
+### [PromQL](./docs/08_PromQL.md)
