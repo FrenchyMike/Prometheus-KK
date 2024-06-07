@@ -38,6 +38,7 @@ node_cpu_scaling_frequency_min_hertz{cpu="3"} 8e+08
   - How long or how big something is
   - Groups observations into configurable bucket size
   - Example: Response time < 1s, Request size < 1500Mb, see the graph below
+  
   ![alt text](img/histogram.png)
 
 - `summary`
