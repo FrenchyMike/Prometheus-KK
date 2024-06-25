@@ -455,3 +455,46 @@ Get the maximum of the range vector
 
 ## Histogram
 
+3 sub metrics:
+* count: Total number of samples
+* sum: Sum of all the samples
+* bucket: Multiple buckets with a label `le` which contains all sample whose values are less than or equal to the value of the label
+
+To get the total sum of latency accros all requests:
+* `$ requests_latency_seconds_sum`
+
+To get the rate of increase fo the sum of latency accross all requests:
+* `$ rate(requests_latency_seconds_sum[1m])`
+
+To calculate the average latency of a request over the past 5m
+* `$ rate(requests_latency_seconds_sum[5m]) / rate(requests_latency_seconds_count[5m])`
+
+To calculate the percentage of requests that fall into a specific bucket
+* `$ rate(request_latency_seconds_bucket{path="/articles", le="0.06"}[1m]) / ignoring(le) rate(latency_seconds_count{path="/articles"}[1m])`
+
+To calculate the number of observations between two buckets
+* `$ request_latency_seconds_bucket{path="/articles", le="0.06"} - request_latency_seconds_bucket{path="/articles", le="0.03}`
+
+
+### Quantiles
+
+Determine how many values in a distribution are above or below a certain value
+
+Quantiles represents percentiles
+
+*90% quantile would mean at what value is 90 percent of the data less than*
+
+Histogram have `histogram_quantile()` function to easily calculate quantiles values
+* `$ histogram_quantile(<PERCENTILE>, <HISTOGRAM_METRIC>)`
+* `$ histogram_quantile(0.75, request_latency_seconds_bucket)`
+
+### Difference between Histogram and Summary
+
+| Histogram | Summary |
+|----------|---------|
+| Bucket sizes can be picked | Quantile must be defined ahead of time |
+| Less taxing on client libraries | More taxing on client librairies |
+| Any quantile can be selected | Only quantiles predefined in client can be used |
+| Promethesu server must calculate quantiles | Very minimal server-side cost |
+
+
